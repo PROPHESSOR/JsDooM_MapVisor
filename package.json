@@ -1,0 +1,41 @@
+{
+    "window": {
+        "as_desktop": false,
+        "transparent": false,
+        "exe_icon": "icon.png",
+        "mac_icon": "icon.png",
+        "fullscreen": false,
+        "kiosk_emulation": false,
+        "frame": true,
+        "resizable": false,
+        "show_in_taskbar": true,
+        "show": true,
+        "width": 640,
+        "height": 480,
+        "title": "JsMobileBasic Interpreter",
+        "always_on_top": false,
+        "visible": true,
+        "icon": "icon.png",
+        "toolbar": false,
+        "kiosk": false
+    },
+    "author": "PROPHESSOR",
+    "webkit": {
+        "plugin": false,
+        "java": false,
+        "page-cache": false
+    },
+    "version": "0.0.10",
+    "additional_trust_anchors": [],
+    "description": "JsMobileBasic Interpreter (http://vk.com/JsMobileBasic/)",
+    "single-instance": true,
+    "app_name": "JsMB",
+    "name": "interpreter",
+    "nodejs": true,
+    "scripts": {
+        "run":"jsmb ."
+    },
+    "icon": "icon.png",
+    "license": "ISC",
+    "main": "index.html"
+}
