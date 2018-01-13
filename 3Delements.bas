@@ -112,7 +112,7 @@ class Squere {
     const [v1, v2, v3, v4] = [transform.transform(this.v1), transform.transform(this.v2), transform.transform(this.v3), transform.transform(this.v4)]
     if (this.color) {
       ctx.fillStyle = this.color;
-      ctx.strokeColor = this.color.replace('0.3', 1)
+      ctx.strokeColor = 'black';// this.color.replace('0.3', 1)
     }
     fillRect4(
       zero[0] + v1.x, zero[1] + v1.y,
