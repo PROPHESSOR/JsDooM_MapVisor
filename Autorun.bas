@@ -61,19 +61,19 @@ function Main() {
         render();
         break;
       case 85:
-        posZ++; //Foward
+        posZ+=10; //Foward
         render();
         break;
       case 75:
-        posX++; //Right
+        posX+=10; //Right
         render();
         break;
       case 74:
-        posZ--; //Back
+        posZ-=10; //Back
         render();
         break;
       case 72:
-        posX--; //Left
+        posX-=10; //Left
         render();
         break;
       default:
@@ -104,7 +104,7 @@ function Main() {
   for (const line of lines) {
     debugger;
     const color = rgba(random(0, 255), random(0, 255), random(0, 255), .3);
-    elements.push(new Wall(
+    /* if(sides[Math.max(line.front, 0)].middletex !== 43) */ elements.push(new Wall(
       new Vertex(vertexes[line.v1].x, 0, vertexes[line.v1].y),
       new Vertex(vertexes[line.v2].x, 0, vertexes[line.v2].y),
       rgba(random(0, 255), random(0, 255), random(0, 255), .3),
@@ -120,7 +120,7 @@ function render() {
   fillScreen('black');
 
   for (const element of elements) {
-    element.render(transX, transY, transZ, Scale, posX, posY, posZ);
+    element.render({transX, transY, transZ, Scale, posX, posY, posZ});
   }
 }
 
