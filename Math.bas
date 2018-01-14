@@ -12,27 +12,89 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 
-class Vec2 extends Array {
-	constructor(val1, val2) {
-		super(val1, val2);
+class Vec2 {
+	constructor(x = 1, y = 1) {
+		this.x = x;
+		this.y = y;
 	}
 
 	normalize() {
 		return Vec2.normalize(this);
 	}
+
+	plus(vector) {
+		return Vec2.add(this, vector);
+	}
+
+	minus(vector) {
+		return Vec2.substract(this, vector);
+	}
+
+	get length() {
+		return Math.sqrt(this.x ** 2 + this.y ** 2);
+	}
+
+	/**
+	 * Сумма двух векторов/вектора и числа
+	 * @param vector1 
+	 * @param vector2 
+	 */
+	static add(vector1, vector2) {
+		if (typeof vector2 === 'number') {
+			// Умножение на скаляр
+			return new Vec2(
+				vector1.x + vector2,
+				vector1.y + vector2
+			);
+		}
+
+		if (vector2 instanceof Vec2) {
+			return new Vec2(
+				vector1.x + vector2.x,
+				vector1.y + vector2.y
+			)
+		}
+	}
+
+	/**
+	 * разность двух векторов/вектора и числа
+	 * @param vector1 
+	 * @param vector2 
+	 */
+	static substract(vector1, vector2) {
+		if (typeof vector2 === 'number') {
+			// Умножение на скаляр
+			return new Vec2(
+				vector1.x - vector2,
+				vector1.y - vector2
+			);
+		}
+
+		if (vector2 instanceof Vec2) {
+			return new Vec2(
+				vector1.x - vector2.x,
+				vector1.y - vector2.y
+			)
+		}
+	}
+
 	/** Нормализация вектора
 	 */
 	static normalize(vector) {
 		return new Vec2(
-			vector[0] / vector.length,
-			vector[1] / vector.length
+			vector.x / vector.length,
+			vector.y / vector.length
 		);
+	}
+
+	static getLength(vector) {
+		return Math.sqrt(vector.x ** 2 + vector.y ** 2);
 	}
 
 	/** Скалярное произведение
 	 */
 	static dot(vector1, vector2) {
-		return (vector1[0] * vector2[0] ) + (vector1[1] * vector2[1]);
+		return (vector1.x * vector2.x) + (vector1.y * vector2.y);
 	}
 
 	/** Векторное произведение
@@ -40,8 +102,8 @@ class Vec2 extends Array {
 	 */
 	static cross(vector1, vector2) {
 		return new Vec2(
-			vector1[1] * vector2[2] - vector1[2] * vector2[1],
-			vector1[2] * vector2[0] - vector1[0] * vector2[2]
+			vector1.y * vector2.z - vector1.z * vector2.y,
+			vector1.z * vector2.x - vector1.x * vector2.z
 		);
 	}
 
@@ -52,44 +114,106 @@ class Vec2 extends Array {
 		if (typeof vector2 === 'number') {
 			// Умножение на скаляр
 			return new Vec2(
-				vector1[0] * vector2,
-				vector1[1] * vector2
+				vector1.x * vector2,
+				vector1.y * vector2
 			);
 		}
 
-		if(vector2 instanceof Vec2) {
+		if (vector2 instanceof Vec2) {
 			return new Vec2(
-				vector1[0] * vector2[0],
-				vector1[1] * vector2[1]
+				vector1.x * vector2.x,
+				vector1.y * vector2.y
 			)
 		}
 	}
 }
 
 
-class Vec3 extends Array {
-	constructor(val1, val2, val3) {
-		super(val1, val2, val3);
+class Vec3 {
+	constructor(x = 1, y = 1, z = 1) {
+		this.x = x;
+		this.y = y;
+		this.z = z;
+	}
+
+	plus(value) {
+		Vec3.add(this, value);
+	}
+
+	minus(value) {
+		Vec3.substract(this, value);
 	}
 
 	normalize() {
 		return Vec3.normalize(this);
 	}
 
+	get length() {
+		return Math.sqrt(this.x ** 2 + this.y ** 2 + this.z ** 2);
+	}
+
+	/**
+	 * Сумма двух векторов/вектора и числа
+	 * @param vector1 
+	 * @param vector2 
+	 */
+	static add(vector1, vector2) {
+		if (typeof vector2 === 'number') {
+			// Умножение на скаляр
+			return new Vec3(
+				vector1.x + vector2,
+				vector1.y + vector2,
+				vector1.z + vector2
+			);
+		}
+
+		if (vector2 instanceof Vec3) {
+			return new Vec3(
+				vector1.x + vector2.x,
+				vector1.y + vector2.y,
+				vector1.z + vector2.z,
+			)
+		}
+	}
+
+	/**
+	 * Разность двух векторов/вектора и числа
+	 * @param vector1 
+	 * @param vector2 
+	 */
+	static substract(vector1, vector2) {
+		if (typeof vector2 === 'number') {
+			// Умножение на скаляр
+			return new Vec3(
+				vector1.x + vector2,
+				vector1.y + vector2,
+				vector1.z + vector2
+			);
+		}
+
+		if (vector2 instanceof Vec3) {
+			return new Vec3(
+				vector1.x + vector2.x,
+				vector1.y + vector2.y,
+				vector1.z + vector2.z,
+			)
+		}
+	}
+
 	/** Нормализация вектора
 	 */
 	static normalize(vector) {
 		return new Vec3(
-			vector[0] / vector.length,
-			vector[1] / vector.length,
-			vector[2] / vector.length
+			vector.x / vector.length,
+			vector.y / vector.length,
+			vector.z / vector.length
 		);
 	}
 
 	/** Скалярное произведение
 	 */
 	static dot(vector1, vector2) {
-		return (vector1[0] * vector2[0] ) + (vector1[1] * vector2[1]) + (vector1[2] * vector2[2]);
+		return (vector1.x * vector2.x) + (vector1.y * vector2.y) + (vector1.z * vector2.z);
 	}
 
 	/** Векторное произведение
@@ -97,9 +221,9 @@ class Vec3 extends Array {
 	 */
 	static cross(vector1, vector2) {
 		return new Vec3(
-			vector1[1] * vector2[2] - vector1[2] * vector2[1],
-			vector1[2] * vector2[0] - vector1[0] * vector2[2],
-			vector1[0] * vector2[1] - vector1[1] * vector2[0]
+			vector1.y * vector2.z - vector1.z * vector2.y,
+			vector1.z * vector2.x - vector1.x * vector2.z,
+			vector1.x * vector2.y - vector1.y * vector2.x
 		);
 	}
 
@@ -110,17 +234,17 @@ class Vec3 extends Array {
 		if (typeof vector2 === 'number') {
 			// Умножение на скаляр
 			return new Vec3(
-				vector1[0] * vector2,
-				vector1[1] * vector2,
-				vector1[2] * vector2
+				vector1.x * vector2, //TODO: a.x || a
+				vector1.y * vector2,
+				vector1.z * vector2
 			);
 		}
 
-		if(vector2 instanceof Vec3) {
+		if (vector2 instanceof Vec3) {
 			return new Vec3(
-				vector1[0] * vector2[0],
-				vector1[1] * vector2[1],
-				vector1[2] * vector2[2],
+				vector1.x * vector2.x,
+				vector1.y * vector2.y,
+				vector1.z * vector2.z,
 			)
 		}
 	}
@@ -173,9 +297,10 @@ class Matrix4 {
 
 	transform(vertex) {
 		return new Vertex(
-			vertex.x * this.values[0] + vertex.y * this.values[3] + vertex.z * this.values[6], // X
-			vertex.x * this.values[1] + vertex.y * this.values[4] + vertex.z * this.values[7], // Y
-			vertex.x * this.values[2] + vertex.y * this.values[5] + vertex.z * this.values[8] /// Z
+			vertex.x * this.values[0] + vertex.y * this.values[4] + vertex.z * this.values[8], // X
+			vertex.x * this.values[1] + vertex.y * this.values[5] + vertex.z * this.values[9], // Y
+			vertex.x * this.values[2] + vertex.y * this.values[6] + vertex.z * this.values[10], // Z
+			vertex.x * this.values[3] + vertex.y * this.values[7] + vertex.z * this.values[11], // Z
 		);
 	}
 }

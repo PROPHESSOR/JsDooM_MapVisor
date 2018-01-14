@@ -14,9 +14,6 @@ function fillRect4(x1, y1, x2, y2, x3, y3, x4, y4) {
 class Vertex extends Vec3 {
   constructor(x = 0, y = 0, z = 0) {
     super(x, y, z);
-    this.x = x;
-    this.y = y;
-    this.z = z;
   }
 }
 
