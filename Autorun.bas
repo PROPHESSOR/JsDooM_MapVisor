@@ -10,6 +10,7 @@ let elements = [];
 const zero = [screenWidth() / 2, screenHeight() / 2];
 
 let [transX, transY, transZ, Scale] = [0, 0, 0, 1];
+let [posX, posY, posZ] = [0, 0, 0];
 
 function Main() {
   window.onKeyDown = function (code) {

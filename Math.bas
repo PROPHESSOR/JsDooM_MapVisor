@@ -35,6 +35,25 @@ class Vec2 {
 	}
 
 	/**
+	 * Получить вектор из объекта/массива
+	 * @param array - Массив или объект с полями xy
+	 */
+	static from(array) {
+		if(typeof array !== "object") throw new TypeError('argument must be Object or Array!');
+		if(array instanceof Array) {
+			return new Vec3(
+				array[0], //TODO: a[0] || a.x
+				array[1]
+			)
+		}
+
+		return new Vec3(
+			array.x,
+			array.y
+		)
+	}
+
+	/**
 	 * Сумма двух векторов/вектора и числа
 	 * @param vector1 
 	 * @param vector2 
@@ -150,6 +169,27 @@ class Vec3 {
 
 	get length() {
 		return Math.sqrt(this.x ** 2 + this.y ** 2 + this.z ** 2);
+	}
+
+	/**
+	 * Получить вектор из объекта/массива
+	 * @param array - Массив или объект с полями xyz
+	 */
+	static from(array) {
+		if(typeof array !== "object") throw new TypeError('argument must be Object or Array!');
+		if(array instanceof Array) {
+			return new Vec3(
+				array[0], //TODO: a[0] || a.x
+				array[1],
+				array[2]
+			)
+		}
+
+		return new Vec3(
+			array.x,
+			array.y,
+			array.z
+		)
 	}
 
 	/**
