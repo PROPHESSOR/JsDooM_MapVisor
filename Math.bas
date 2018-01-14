@@ -250,8 +250,23 @@ class Vec3 {
 	}
 }
 
+class Matrix2 {
+	constructor(values) {
+		if (values.length !== 4) throw new TypeError("Isn't matrix 2x2 data!");
+		this.values = values;
+	}
+
+	transform(vector) {
+		return new Vec2(
+			vector.x * values[0] + vector.y * values[2],
+			vector.x * values[1] + vector.y * values[3]
+		);
+	}
+}
+
 class Matrix3 {
 	constructor(values) {
+		if (values.length !== 9) throw new TypeError("Isn't matrix 3x3 data!");
 		this.values = values;
 	}
 
@@ -268,17 +283,18 @@ class Matrix3 {
 		return new Matrix3(result);
 	}
 
-	transform(vertex) {
-		return new Vertex(
-			vertex.x * this.values[0] + vertex.y * this.values[3] + vertex.z * this.values[6], // X
-			vertex.x * this.values[1] + vertex.y * this.values[4] + vertex.z * this.values[7], // Y
-			vertex.x * this.values[2] + vertex.y * this.values[5] + vertex.z * this.values[8] /// Z
+	transform(vector) {
+		return new Vec3(
+			vector.x * this.values[0] + vector.y * this.values[3] + vector.z * this.values[6], // X
+			vector.x * this.values[1] + vector.y * this.values[4] + vector.z * this.values[7], // Y
+			vector.x * this.values[2] + vector.y * this.values[5] + vector.z * this.values[8] /// Z
 		);
 	}
 }
 
 class Matrix4 {
 	constructor(values) {
+		if (values.length !== 16) throw new TypeError("Isn't matrix 4x4 data!");
 		this.values = values;
 	}
 
@@ -295,12 +311,12 @@ class Matrix4 {
 		return new Matrix3(result);
 	}
 
-	transform(vertex) {
-		return new Vertex(
-			vertex.x * this.values[0] + vertex.y * this.values[4] + vertex.z * this.values[8], // X
-			vertex.x * this.values[1] + vertex.y * this.values[5] + vertex.z * this.values[9], // Y
-			vertex.x * this.values[2] + vertex.y * this.values[6] + vertex.z * this.values[10], // Z
-			vertex.x * this.values[3] + vertex.y * this.values[7] + vertex.z * this.values[11], // Z
+	transform(vector) {
+		return new Vec3(
+			vector.x * this.values[0] + vector.y * this.values[4] + vector.z * this.values[8], // X
+			vector.x * this.values[1] + vector.y * this.values[5] + vector.z * this.values[9], // Y
+			vector.x * this.values[2] + vector.y * this.values[6] + vector.z * this.values[10], // Z
+			vector.x * this.values[3] + vector.y * this.values[7] + vector.z * this.values[11], // Z
 		);
 	}
 }
