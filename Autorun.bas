@@ -1,6 +1,6 @@
 // ==================JsMobileBasic Script================= *
 
-include('Matrix.bas');
+include('Math.bas');
 include('3Delements.bas');
 
 const FRAME = true;
@@ -69,10 +69,10 @@ function Main() {
   //     rgb(random(0, 255), random(0, 255), random(0, 255))));
 
   const WadParser = new(require('./WadParser'));
-  const vertexes = WadParser.getVertexes('/home/prophessor/VERTEXES.lmp');
-  const lines = WadParser.getLinedefs('/home/prophessor/LINEDEFS.lmp');
-  const sectors = WadParser.getSectors('/home/prophessor/SECTORS.lmp');
-  const sides = WadParser.getSides('/home/prophessor/SIDEDEFS.lmp')
+  const vertexes = WadParser.getVertexes('data/VERTEXES.lmp');
+  const lines = WadParser.getLinedefs('data/LINEDEFS.lmp');
+  const sectors = WadParser.getSectors('data/SECTORS.lmp');
+  const sides = WadParser.getSides('data/SIDEDEFS.lmp')
   //   console.log(vertexes);
   //   console.log(lines);
   function a(n) {

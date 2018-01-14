@@ -1,16 +1,6 @@
-<script>
-    var $Config = {
-        type: 'graphic', //graphic/console/api
-        canvas_size: ['*','*',true], //[x,y,вместить]
-        Debug_Mode: true,
-        name: "Интерпретатор MobileBasic'a",
-        fullscreen: false
-    }
-</script>
 <!--
                                             ##############~ВНИМАНИЕ!~##############
                                             #Весь код пишется в файле Autorun.bas!#
-                                            #====Здесь меняйте только конфиг!=====#
                                             ##############~ВНИМАНИЕ!~##############
 -->
 <!Doctype HTML>
@@ -25,6 +15,7 @@
         <div id="audio">
             <audio id="player0">Для запуска приложений JsMobileBasic требуеться браузер, поддерживающий аудио!</audio>
         </div>
+        <script src="config.js" type="text/javascript"></script>
         <script src="MobileBasic.dll" type="text/javascript"></script>
         <div id="includeHTML">
             <!-- Сюда подключается кастомный HTML код -->
