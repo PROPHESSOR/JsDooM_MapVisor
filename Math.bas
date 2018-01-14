@@ -13,7 +13,8 @@
 //    limitations under the License.
 
 class Vec2 {
-	constructor(x = 1, y = 1) {
+	constructor(x = 1, y) {
+		if (arguments.length === 1) y = x;
 		this.x = x;
 		this.y = y;
 	}
@@ -39,8 +40,8 @@ class Vec2 {
 	 * @param array - Массив или объект с полями xy
 	 */
 	static from(array) {
-		if(typeof array !== "object") throw new TypeError('argument must be Object or Array!');
-		if(array instanceof Array) {
+		if (typeof array !== "object") throw new TypeError('argument must be Object or Array!');
+		if (array instanceof Array) {
 			return new Vec3(
 				array[0], //TODO: a[0] || a.x
 				array[1]
@@ -150,6 +151,7 @@ class Vec2 {
 
 class Vec3 {
 	constructor(x = 1, y = 1, z = 1) {
+		if (arguments.length === 1) z = y = x;
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -176,8 +178,8 @@ class Vec3 {
 	 * @param array - Массив или объект с полями xyz
 	 */
 	static from(array) {
-		if(typeof array !== "object") throw new TypeError('argument must be Object or Array!');
-		if(array instanceof Array) {
+		if (typeof array !== "object") throw new TypeError('argument must be Object or Array!');
+		if (array instanceof Array) {
 			return new Vec3(
 				array[0], //TODO: a[0] || a.x
 				array[1],
@@ -290,6 +292,12 @@ class Vec3 {
 	}
 }
 
+class Vec4 extends Vec3 {
+	constructor(x, y, z, w) {
+		super(x,y,z);
+	}
+}
+
 class Matrix2 {
 	constructor(values) {
 		if (values.length !== 4) throw new TypeError("Isn't matrix 2x2 data!");
@@ -352,11 +360,57 @@ class Matrix4 {
 	}
 
 	transform(vector) {
-		return new Vec3(
+		return new Vec4(
 			vector.x * this.values[0] + vector.y * this.values[4] + vector.z * this.values[8], // X
 			vector.x * this.values[1] + vector.y * this.values[5] + vector.z * this.values[9], // Y
-			vector.x * this.values[2] + vector.y * this.values[6] + vector.z * this.values[10] // Z
-			// vector.x * this.values[3] + vector.y * this.values[7] + vector.z * this.values[11], // Z
+			vector.x * this.values[2] + vector.y * this.values[6] + vector.z * this.values[10], // Z
+			vector.x * this.values[3] + vector.y * this.values[7] + vector.z * this.values[11], // W
 		);
+	}
+
+	setRotation(vec3) {
+		const [hds, hdc] = [Math.sin(vec3.x), Math.cos(vec3.x)]; //X Heading
+		const [pts, ptc] = [Math.sin(vec3.x), Math.cos(vec3.x)]; //Y Pitch
+		const [ans, anc] = [Math.sin(vec3.x), Math.cos(vec3.x)]; //Z Angle
+
+		this.values = [
+			hdc * anc, -ans, -hds, 0x0,
+			ans, ptc * anc, pts, 0x0,
+			hds, -pts, hdc, 0x0,
+			0x0, 0x0, 0x0, 0x1
+		];
+		return this;
+		/* 
+		FIXME:cos(transZ), -sin(transZ), 0, 0,
+      sin(transZ), FIXME:cos(transZ), 0, 0,
+      0, 0, 1, 0,
+      0, 0, 0, 1
+		*/
+	}
+
+	toString() {
+		let out = "";
+		let counter = 0;
+		for (const i of this.values) {
+			out += `${i}\t${counter%4===3?'\n':''}`
+			counter++;
+		}
+		return out;
+	}
+
+	setPosition(vec3) {
+		this.values[12] = vec3.x;
+		this.values[13] = vec3.y;
+		this.values[14] = vec3.z;
+		return this;
+	}
+
+	static get template() {
+		return new Matrix4([
+			1, 0, 0, 0,
+			0, 1, 0, 0,
+			0, 0, 1, 0,
+			0, 0, 0, 1
+		])
 	}
 }

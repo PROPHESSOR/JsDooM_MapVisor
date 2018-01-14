@@ -22,6 +22,10 @@ function Main() {
     // 83 S
     // 65 A
     // 68 D
+    // 85 U
+    // 75 K
+    // 74 J
+    // 72 H
     switch (code) {
       case 38:
         transY--;
@@ -54,6 +58,22 @@ function Main() {
         break;
       case 68:
         transZ-=0.1;
+        render();
+        break;
+      case 85:
+        posZ++; //Foward
+        render();
+        break;
+      case 75:
+        posX++; //Right
+        render();
+        break;
+      case 74:
+        posZ--; //Back
+        render();
+        break;
+      case 72:
+        posX--; //Left
         render();
         break;
       default:
@@ -100,7 +120,7 @@ function render() {
   fillScreen('black');
 
   for (const element of elements) {
-    element.render(transX, transY, transZ, Scale);
+    element.render(transX, transY, transZ, Scale, posX, posY, posZ);
   }
 }
 

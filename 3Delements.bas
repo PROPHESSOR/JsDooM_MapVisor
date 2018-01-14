@@ -74,9 +74,10 @@ class Squere {
     this.depth = (v1.z + v2.z + v3.z + v4.z) / 4;
   }
 
-  render(transX = transX, transY = transY, transZ = 0, scale = 1) {
+  render(transX = transX, transY = transY, transZ = 0, scale = 1 /* , posX = 0, posY = 0, posZ = 0 */ ) {
     const heading = transX * DEG2RAD;
     const pitch = transY * DEG2RAD;
+    const angle = transZ * DEG2RAD;
 
     const headingTransform = new Matrix4([
       Math.cos(heading), 0, -Math.sin(heading), 0,
@@ -106,12 +107,25 @@ class Squere {
       0, -Math.sin(pitch), Math.cos(pitch), 0,
       0, 0, 0, 1
     ]);
-    const transform = ((headingTransform.multiply(pitchTransform))
-        .multiply(angleTransform))
-      .multiply(scaleTransform);
+
+    const positionTransform = new Matrix4([
+      1, 0, 0, posX,
+      0, 1, 0, posY,
+      0, 0, 1, posZ,
+      0, 0, 0, 1
+    ]);
+
+    const transform = (((headingTransform.multiply(pitchTransform))
+          .multiply(angleTransform))
+        .multiply(scaleTransform))
+      .multiply(positionTransform);
+
+    // const transform = Matrix4.template
+    //   .setPosition(new Vec3(posX, posY, posZ))
+    //   .setRotation(new Vec3(heading, pitch, transZ));
 
 
-    const [v1, v2, v3, v4] = [transform.transform(this.v1), transform.transform(this.v2), transform.transform(this.v3), transform.transform(this.v4)]
+    const[v1, v2, v3, v4] = [transform.transform(this.v1), transform.transform(this.v2), transform.transform(this.v3), transform.transform(this.v4)]
     if (this.color) {
       ctx.fillStyle = this.color;
       ctx.strokeColor = 'black'; // this.color.replace('0.3', 1)
