@@ -348,15 +348,15 @@ class Matrix4 {
 				}
 			}
 		}
-		return new Matrix3(result);
+		return new Matrix4(result);
 	}
 
 	transform(vector) {
 		return new Vec3(
 			vector.x * this.values[0] + vector.y * this.values[4] + vector.z * this.values[8], // X
 			vector.x * this.values[1] + vector.y * this.values[5] + vector.z * this.values[9], // Y
-			vector.x * this.values[2] + vector.y * this.values[6] + vector.z * this.values[10], // Z
-			vector.x * this.values[3] + vector.y * this.values[7] + vector.z * this.values[11], // Z
+			vector.x * this.values[2] + vector.y * this.values[6] + vector.z * this.values[10] // Z
+			// vector.x * this.values[3] + vector.y * this.values[7] + vector.z * this.values[11], // Z
 		);
 	}
 }

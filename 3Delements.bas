@@ -78,39 +78,43 @@ class Squere {
     const heading = transX * DEG2RAD;
     const pitch = transY * DEG2RAD;
 
-    const headingTransform = new Matrix3([
-      Math.cos(heading), 0, -Math.sin(heading),
-      0, 1, 0, //
-      Math.sin(heading), 0, Math.cos(heading)
+    const headingTransform = new Matrix4([
+      Math.cos(heading), 0, -Math.sin(heading), 0,
+      0, 1, 0, 0,
+      Math.sin(heading), 0, Math.cos(heading), 0,
+      0, 0, 0, 1
     ]);
 
-    const angleTransform = new Matrix3([
-      cos(transZ), -sin(transZ), 0,
-      sin(transZ), cos(transZ), 0,
-      0, 0, 1
-	])
-	
-	const scaleTransform = new Matrix3([
-		scale, 0, 0,
-		0, scale, 0,
-		0, 0, scale
-	])
+    const angleTransform = new Matrix4([
+      cos(transZ), -sin(transZ), 0, 0,
+      sin(transZ), cos(transZ), 0, 0,
+      0, 0, 1, 0,
+      0, 0, 0, 1
+    ])
+
+    const scaleTransform = new Matrix4([
+      scale, 0, 0, 0,
+      0, scale, 0, 0,
+      0, 0, scale, 0,
+      0, 0, 0, 1
+    ])
 
 
-    const pitchTransform = new Matrix3([
-      1, 0, 0,
-      0, Math.cos(pitch), Math.sin(pitch),
-      0, -Math.sin(pitch), Math.cos(pitch)
+    const pitchTransform = new Matrix4([
+      1, 0, 0, 0,
+      0, Math.cos(pitch), Math.sin(pitch), 0,
+      0, -Math.sin(pitch), Math.cos(pitch), 0,
+      0, 0, 0, 1
     ]);
     const transform = ((headingTransform.multiply(pitchTransform))
-	  .multiply(angleTransform))
-	  .multiply(scaleTransform);
+        .multiply(angleTransform))
+      .multiply(scaleTransform);
 
 
     const [v1, v2, v3, v4] = [transform.transform(this.v1), transform.transform(this.v2), transform.transform(this.v3), transform.transform(this.v4)]
     if (this.color) {
       ctx.fillStyle = this.color;
-      ctx.strokeColor = 'black';// this.color.replace('0.3', 1)
+      ctx.strokeColor = 'black'; // this.color.replace('0.3', 1)
     }
     fillRect4(
       zero[0] + v1.x, zero[1] + v1.y,
