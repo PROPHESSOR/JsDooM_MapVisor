@@ -11,6 +11,7 @@ const zero = [screenWidth() / 2, screenHeight() / 2];
 
 let [transX, transY, transZ, Scale] = [0, 0, 0, 1];
 let [posX, posY, posZ] = [0, 0, 0];
+let fill = true;
 
 function Main() {
   window.onKeyDown = function (code) {
@@ -74,6 +75,10 @@ function Main() {
         break;
       case 72:
         posX-=10; //Left
+        render();
+        break;
+      case 27: //Esc
+        fill = !fill;
         render();
         break;
       default:

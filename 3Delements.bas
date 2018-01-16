@@ -74,20 +74,28 @@ class Squere {
     this.depth = (v1.z + v2.z + v3.z + v4.z) / 4;
   }
 
-  render({transX = transX, transY = transY, transZ = 0, Scale = 1, posX = 0, posY = 0, posZ = 0}) {
+  render({
+    transX = transX,
+    transY = transY,
+    transZ = 0,
+    Scale = 1,
+    posX = 0,
+    posY = 0,
+    posZ = 0
+  }) {
     const heading = transX * DEG2RAD;
     const pitch = transY * DEG2RAD;
     const angle = transZ * DEG2RAD;
 
     const headingTransform = new Matrix3([
-      Math.cos(heading), 0, -Math.sin(heading),// 0,
+      Math.cos(heading), 0, -Math.sin(heading), // 0,
       0, 1, 0, //0,
       Math.sin(heading), 0, Math.cos(heading), //0,
       //0, 0, 0, 1
     ]);
 
     const angleTransform = new Matrix3([
-      cos(transZ), -sin(transZ), 0,// 0,
+      cos(transZ), -sin(transZ), 0, // 0,
       sin(transZ), cos(transZ), 0, //0,
       0, 0, 1, //0,
       //0, 0, 0, 1
@@ -104,7 +112,7 @@ class Squere {
     const pitchTransform = new Matrix3([
       1, 0, 0, //0,
       0, Math.cos(pitch), Math.sin(pitch), //0,
-      0, -Math.sin(pitch), Math.cos(pitch),// 0,
+      0, -Math.sin(pitch), Math.cos(pitch), // 0,
       //0, 0, 0, 1
     ]);
 
@@ -116,43 +124,50 @@ class Squere {
     ]);
 
     const transform = (((headingTransform.multiply(pitchTransform))
-          .multiply(angleTransform))
-        .multiply(scaleTransform))
-     // .multiply(positionTransform);
+        .multiply(angleTransform))
+      .multiply(scaleTransform))
+    // .multiply(positionTransform);
 
     // const transform = Matrix4.template
     //   .setPosition(new Vec3(posX, posY, posZ))
     //   .setRotation(new Vec3(heading, pitch, transZ));
 
 
-    const[v1, v2, v3, v4] = [transform.transform(this.v1), transform.transform(this.v2), transform.transform(this.v3), transform.transform(this.v4)]
+    const [v1, v2, v3, v4] = [transform.transform(this.v1), transform.transform(this.v2), transform.transform(this.v3), transform.transform(this.v4)]
     if (this.color) {
       ctx.fillStyle = this.color;
       ctx.strokeColor = 'black'; // this.color.replace('0.3', 1)
     }
 
-    function project(x, y, z){
+    function project(x, y, z) {
       const Z = 3;
       // Xp = (XZw - ZXw) / (Zw - Z)
       // Xp = (YZw - ZYw) / (Zw - Z)
       return [
         // (x*z - z*x) / (z - z),
-        x+posX,
-        y+posZ
+        x + posX,
+        y + posZ
       ]
     }
 
     // ctx.fillStyle = rgb(5*~~Math.abs(v1.z/100), 5*~~Math.abs(v2.z/100), 5*~~Math.abs(v3.z/100));
-/* 
-    const среднее = Math.abs(v1.normalize().z+v2.normalize().z)/2;//+v3.normalize().z+v4.normalize().z) / 4;
-    ctx.fillStyle = this.color.replace('0.3', среднее);//v1.normalize().z)
-console.log(`%c${среднее}`, `color:${ctx.fillStyle}`);
+    /* 
+        const среднее = Math.abs(v1.normalize().z+v2.normalize().z)/2;//+v3.normalize().z+v4.normalize().z) / 4;
+        ctx.fillStyle = this.color.replace('0.3', среднее);//v1.normalize().z)
+    console.log(`%c${среднее}`, `color:${ctx.fillStyle}`);
 
-*/
-const среднее = Math.max(abs(v1.normalize().z),abs(v2.normalize().z),abs(v3.normalize().z),abs(v4.normalize().z)) // 4;
+    */
+    const avg = Math.max(abs(v1.normalize().z), abs(v2.normalize().z), abs(v3.normalize().z), abs(v4.normalize().z)) // 4;
     // const среднее = (v1.z+v2.z+v3.z+v4.z) / 4;
-    ctx.fillStyle = this.color.replace('0.3', среднее)
     // console.log(`%c${v1.normalize().z}; ${v2.normalize().z}`, `color:${ctx.fillStyle.replace('0.3',1)}`);
+
+    if (fill) {
+      ctx.fillStyle = this.color.replace('0.3', avg)
+      ctx.strokeStyle = 'black';
+    } else {
+      ctx.fillStyle = 'black';
+      ctx.strokeStyle = this.color.replace('0.3', 1);
+    }
 
     fillRect4(
       ...project(zero[0] + v1.x, zero[1] + v1.y, v1.z),
