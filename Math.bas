@@ -213,7 +213,7 @@ class Vec3 {
 			return new Vec3(
 				vector1.x + vector2.x,
 				vector1.y + vector2.y,
-				vector1.z + vector2.z,
+				vector1.z + vector2.z
 			)
 		}
 	}
@@ -237,7 +237,7 @@ class Vec3 {
 			return new Vec3(
 				vector1.x + vector2.x,
 				vector1.y + vector2.y,
-				vector1.z + vector2.z,
+				vector1.z + vector2.z
 			)
 		}
 	}
@@ -286,7 +286,7 @@ class Vec3 {
 			return new Vec3(
 				vector1.x * vector2.x,
 				vector1.y * vector2.y,
-				vector1.z * vector2.z,
+				vector1.z * vector2.z
 			)
 		}
 	}
