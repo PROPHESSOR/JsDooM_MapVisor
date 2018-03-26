@@ -43,16 +43,16 @@ class Triangle {
     const pitch = transY * DEG2RAD;
 
     const headingTransform = new Matrix3([
-      Math.cos(heading), 0, Math.sin(heading),
-      0, 1, 0, //
+      Math.cos(heading), 0, -Math.sin(heading),
+      0,		 1, 0, //
       Math.sin(heading), 0, Math.cos(heading)
     ]);
 
 
     const pitchTransform = new Matrix3([
       1, 0, 0,
-      0, Math.cos(pitch), Math.sin(pitch),
-      0, -Math.sin(pitch), Math.cos(pitch)
+      0, Math.cos(pitch), -Math.sin(pitch),
+      0, Math.sin(pitch), Math.cos(pitch)
     ]);
     const transform = headingTransform.multiply(pitchTransform);
 
