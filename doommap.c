@@ -32,6 +32,24 @@ typedef struct sector_t {
     uint16_t tag;
 } sector_t;
 
+struct Box {
+    int16_t top;
+    int16_t bottom;
+    int16_t left;
+    int16_t right;
+};
+
+typedef struct {
+    int16_t lineX;
+    int16_t lineY;
+    int16_t diffX;
+    int16_t diffY;
+    struct Box     rbox;
+    struct Box     lbox;
+    uint16_t rchild;
+    uint16_t lchild;
+} node_t;
+
 
 static vertex_t     *vertexes   = NULL;
 static uint16_t      vertexno   = 0;
@@ -41,6 +59,8 @@ static sidedef_t    *sidedefs   = NULL;
 static uint16_t      sidedefno  = 0;
 static sector_t     *sectors    = NULL;
 static uint16_t      sectorno   = 0;
+static node_t       *nodes      = NULL;
+static uint16_t      nodeno     = 0;
 
 _Noreturn
 void fileOpenError(const char filename[]) {
@@ -115,6 +135,23 @@ int readmap(const char *path) {
 #ifdef DEBUG_STRUCTS
     for(short i = 0; i < sectorno; i++) {
         printf("Sector(%hi; %hi)\n", sectors[i].floor, sectors[i].ceil);
+    }
+#endif
+    /**/ fclose(file);
+
+    /*      */ file = fopen("data/NODES.lmp", "r");
+    if(!file) fileOpenError("data/NODES.lmp");
+    fseek(file, 0, SEEK_END); // Getting file size in bytes using fseek(end) and ftell
+    nodeno = (uint16_t)((uint32_t) ftell(file) / sizeof(node_t));
+    printf("Found %hu nodes\n", nodeno);
+
+    fseek(file, 0, SEEK_SET);
+    nodes = (node_t *) malloc(nodeno * sizeof(node_t));
+
+    fread(nodes, sizeof(node_t), nodeno, file);
+#ifdef DEBUG_STRUCTS
+    for(short i = 0; i < nodeno; i++) {
+        printf("Node(%hi; %hi, %hi; %hi, Right child: %hu; Left child: %hu)\n", nodes[i].lineX, nodes[i].lineY, nodes[i].diffX, nodes[i].diffY, nodes[i].rchild, nodes[i].lchild);
     }
 #endif
     /**/ fclose(file);

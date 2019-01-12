@@ -4,13 +4,15 @@
 #define SCW     640
 #define SCH     480
 #define TITLE   "Viewer"
-#define BGCOLOR 0, 0, 0, 255    // Background color
-#define FGCOLOR 255, 0, 0,255   // Lines color
-#define HGCOLOR 0, 0, 255, 255  // Helper line color
+#define BGCOLOR 0, 0, 0, 255       // Background color
+#define LCOLOR  255, 0, 0,255      // Lines color
+#define HCOLOR  0, 0, 255, 255     // Helper line color
+#define NCOLOR  255, 255, 0, 255   // Nodes color
+#define VCOLOR  0, 255, 0, 255     // Vertices color
+#define BCOLOR  0, 128, 0, 255     // BSP boxes color
 #define STEP    15
 
-#define true  1 // 0 =D
-#define false 0 // 1 =D
+typedef enum { false = 0, true = 1 } bool;
 
 #define error(fmt, args...)  printf("[ERROR] "  fmt " %s:%d=>%s(...)\n", ##args, __FILE__, __LINE__, __func__)
 #define warn(fmt, args...)   printf("[WARN] "   fmt "\n", ##args)
@@ -20,18 +22,40 @@ struct {
     int   offsetX;
     int   offsetY;
     float scale;
+    bool  showNodes;
+    bool  showLines;
+    bool  showVertexes;
+    bool  showBoxes;
 } Layout;
+
 
 
 #include "doommap.c"
 #include "renderer.c"
 
 int main() {
-    log("Starting...");
+    printf("Viewer (c) PROPHESSOR 2019\n");
+    printf(
+            "=== Controls ===\n"
+            "\tUp arrow\t- Move top\n"
+            "\tDown arrow\t- Move bottom\n"
+            "\tLeft arrow\t- Move left\n"
+            "\tRight arrow\t- Move right\n"
+            "\tKP+\t\t- Zoom in\n"
+            "\tKP-\t\t- Zoom out\n"
+            "\tL\t\t- Show lines\n"
+            "\tN\t\t- Show nodes\n"
+            "\tV\t\t- Show vertices\n"
+            "\tB\t\t- Show BSP boxes\n"
+    );
 
-    Layout.offsetX = 0;
-    Layout.offsetY = 0;
-    Layout.scale   = 1.f;
+    Layout.offsetX      = 0;
+    Layout.offsetY      = 0;
+    Layout.scale        = 1.f;
+    Layout.showNodes    = false;
+    Layout.showLines    = true;
+    Layout.showVertexes = false;
+    Layout.showBoxes = false;
 
     initSDL();
     readmap("");
@@ -65,6 +89,18 @@ int main() {
                         break;
                     case SDLK_KP_MINUS:
                         Layout.scale   -= Layout.scale / 2.f;
+                        break;
+                    case SDLK_n:
+                        Layout.showNodes = !Layout.showNodes;
+                        break;
+                    case SDLK_l:
+                        Layout.showLines = !Layout.showLines;
+                        break;
+                    case SDLK_v:
+                        Layout.showVertexes = !Layout.showVertexes;
+                        break;
+                    case SDLK_b:
+                        Layout.showBoxes = !Layout.showBoxes;
                         break;
                 }
 

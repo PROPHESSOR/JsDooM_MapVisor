@@ -17,6 +17,10 @@ void drawLine(int x1, int y1, int x2, int y2) {
     SDL_RenderDrawLine(Vi.renderer, x1, y1, x2, y2);
 }
 
+void drawPlot(int x, int y) {
+    SDL_RenderDrawPoint(Vi.renderer, x, y);
+}
+
 void repaint(void) {
     SDL_RenderPresent(Vi.renderer);
 }
@@ -53,15 +57,56 @@ void render() {
 
     cls();
 
-    setColor(HGCOLOR);
+    setColor(HCOLOR);
 
     drawLine(SCW / 2, SCH / 2, vertexes[0].x * Layout.scale + Layout.offsetX, vertexes[0].y * Layout.scale + Layout.offsetY);
 
-    setColor(FGCOLOR);
+    if(Layout.showVertexes) {
+        setColor(VCOLOR);
 
-    for(short i = 0; i < linedefno; i++) {
-        drawLine(vertexes[linedefs[i].v1].x * Layout.scale + Layout.offsetX, vertexes[linedefs[i].v1].y * Layout.scale + Layout.offsetY, 
-                 vertexes[linedefs[i].v2].x * Layout.scale + Layout.offsetX, vertexes[linedefs[i].v2].y * Layout.scale + Layout.offsetY);
+        for(uint16_t i = 0; i < vertexno; i++) {
+            drawPlot(vertexes[i].x, vertexes[i].y);
+        }
+    }
+
+    if(Layout.showLines) {
+        setColor(LCOLOR);
+
+        for(uint16_t i = 0; i < linedefno; i++) {
+            drawLine(vertexes[linedefs[i].v1].x * Layout.scale + Layout.offsetX, vertexes[linedefs[i].v1].y * Layout.scale + Layout.offsetY, 
+                     vertexes[linedefs[i].v2].x * Layout.scale + Layout.offsetX, vertexes[linedefs[i].v2].y * Layout.scale + Layout.offsetY);
+        }
+    }
+
+    if(Layout.showNodes) {
+        setColor(NCOLOR);
+
+        for(uint16_t i = 0; i < nodeno; i++) {
+            node_t *node = &nodes[i];
+
+            drawLine(
+                    node->lineX * Layout.scale + Layout.offsetX,
+                    node->lineY * Layout.scale + Layout.offsetY,
+                    (node->lineX + node->diffX) * Layout.scale + Layout.offsetX,
+                    (node->lineY + node->diffY) * Layout.scale + Layout.offsetY
+            );
+        }
+    }
+
+    if(Layout.showBoxes) {
+        setColor(BCOLOR);
+        
+        for(uint16_t i = 0; i < nodeno; i++) {
+            node_t *node = &nodes[i];
+
+            // -
+            drawLine(
+                    (node->lineX - node->rbox.left) * Layout.scale + Layout.offsetX,
+                    (node->lineY - node->rbox.top) * Layout.scale + Layout.offsetY,
+                    (node->lineX + node->rbox.right) * Layout.scale + Layout.offsetX,
+                    (node->lineY - node->rbox.top) * Layout.scale + Layout.offsetY
+            );
+        }
     }
 
     repaint();
