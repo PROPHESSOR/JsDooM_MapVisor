@@ -50,6 +50,15 @@ typedef struct {
     uint16_t lchild;
 } node_t;
 
+typedef struct {
+    uint16_t v1;
+    uint16_t v2;
+    int16_t  angle;
+    uint16_t linedef;
+    int16_t  side;
+    int16_t  offset;
+} seg_t;
+
 
 static vertex_t     *vertexes   = NULL;
 static uint16_t      vertexno   = 0;
@@ -61,6 +70,8 @@ static sector_t     *sectors    = NULL;
 static uint16_t      sectorno   = 0;
 static node_t       *nodes      = NULL;
 static uint16_t      nodeno     = 0;
+static seg_t        *segs       = NULL;
+static uint16_t      segno      = 0;
 
 _Noreturn
 void fileOpenError(const char filename[]) {
@@ -152,6 +163,23 @@ int readmap(const char *path) {
 #ifdef DEBUG_STRUCTS
     for(short i = 0; i < nodeno; i++) {
         printf("Node(%hi; %hi, %hi; %hi, Right child: %hu; Left child: %hu)\n", nodes[i].lineX, nodes[i].lineY, nodes[i].diffX, nodes[i].diffY, nodes[i].rchild, nodes[i].lchild);
+    }
+#endif
+    /**/ fclose(file);
+
+    /*      */ file = fopen("data/SEGS.lmp", "r");
+    if(!file) fileOpenError("data/SEGS.lmp");
+    fseek(file, 0, SEEK_END); // Getting file size in bytes using fseek(end) and ftell
+    segno = (uint16_t)((uint32_t) ftell(file) / sizeof(seg_t));
+    printf("Found %hu SEGs\n", segno);
+
+    fseek(file, 0, SEEK_SET);
+    segs = (seg_t *) malloc(segno * sizeof(seg_t));
+
+    fread(segs, sizeof(seg_t), segno, file);
+#ifdef DEBUG_STRUCTS
+    for(short i = 0; i < segno; i++) {
+        printf("SEG(%hi; %hi, %hi° %hi <%hi> ±%hi)\n", segs[i].v1, segs[i].v2, segs[i].angle, segs[i].linedef, segs[i].side, segs[i].offset);
     }
 #endif
     /**/ fclose(file);

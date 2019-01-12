@@ -10,6 +10,7 @@
 #define NCOLOR  255, 255, 0, 255   // Nodes color
 #define VCOLOR  0, 255, 0, 255     // Vertices color
 #define BCOLOR  0, 128, 0, 255     // BSP boxes color
+#define ECOLOR  0, 255, 255, 255   // SEGs color
 #define STEP    15
 
 typedef enum { false = 0, true = 1 } bool;
@@ -26,6 +27,7 @@ struct {
     bool  showLines;
     bool  showVertexes;
     bool  showBoxes;
+    bool  showSegs;
 } Layout;
 
 
@@ -47,6 +49,7 @@ int main() {
             "\tN\t\t- Show nodes\n"
             "\tV\t\t- Show vertices\n"
             "\tB\t\t- Show BSP boxes\n"
+            "\tE\t\t- Show SEGs\n"
     );
 
     Layout.offsetX      = 0;
@@ -55,7 +58,8 @@ int main() {
     Layout.showNodes    = false;
     Layout.showLines    = true;
     Layout.showVertexes = false;
-    Layout.showBoxes = false;
+    Layout.showBoxes    = false;
+    Layout.showSegs     = false;
 
     initSDL();
     readmap("");
@@ -101,6 +105,9 @@ int main() {
                         break;
                     case SDLK_b:
                         Layout.showBoxes = !Layout.showBoxes;
+                        break;
+                    case SDLK_e:
+                        Layout.showSegs = !Layout.showSegs;
                         break;
                 }
 

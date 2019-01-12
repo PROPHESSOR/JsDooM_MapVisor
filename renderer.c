@@ -93,7 +93,7 @@ void render() {
         }
     }
 
-    if(Layout.showBoxes) {
+    if(Layout.showBoxes) { // TODO:
         setColor(BCOLOR);
         
         for(uint16_t i = 0; i < nodeno; i++) {
@@ -106,6 +106,15 @@ void render() {
                     (node->lineX + node->rbox.right) * Layout.scale + Layout.offsetX,
                     (node->lineY - node->rbox.top) * Layout.scale + Layout.offsetY
             );
+        }
+    }
+
+    if(Layout.showSegs) {
+        setColor(ECOLOR);
+
+        for(uint16_t i = 0; i < segno; i++) {
+            drawLine(vertexes[segs[i].v1].x * Layout.scale + Layout.offsetX, vertexes[segs[i].v1].y * Layout.scale + Layout.offsetY, 
+                     vertexes[segs[i].v2].x * Layout.scale + Layout.offsetX, vertexes[segs[i].v2].y * Layout.scale + Layout.offsetY);
         }
     }
 
